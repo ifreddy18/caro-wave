@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Player } from '../../classes/player';
+import { Config } from '../../services/config';
 
 @Component({
   selector: 'app-board',
@@ -10,29 +11,33 @@ import { Player } from '../../classes/player';
 export class BoardComponent implements OnInit {
 
   // Create Players
-  player_1 = new Player(1, "X", "red");
-  player_2 = new Player(2, "O", "blue");
-  player_3 = new Player(3, "A", "green");
-  player_4 = new Player(4, "T", "orange");
-
-  players: Player[] = [
-    this.player_1,
-    this.player_2,
-    this.player_3,
-    this.player_4
-  ]
+  player_1: Player;
+  player_2: Player;
+  players: Player[];
 
   // Board
-  boardRows = 12;
-  boardColumns = 16;
+  boardRows: number = 12;
+  boardColumns: number = 16;
   boardInputs = [[], [], [], [], [], [], [], [], [], [], [], []]; // boardRows 12
 
   // Win Condition
-  winConditionArrow = 5;
+  winConditionArrow: number;
   cont = 0;
   winner = false;
 
-  constructor() { }
+  constructor() { 
+    // Players
+    this.player_1 = Config.players.player_1;
+    this.player_2 = Config.players.player_2;
+
+    this.players = [
+      this.player_1,
+      this.player_2,
+    ];
+
+    this.winConditionArrow = Config.winCondition;
+    
+  }
 
   ngOnInit(): void {
     this.initSquares();
@@ -53,13 +58,16 @@ export class BoardComponent implements OnInit {
     }
 
     // EventListeners
-    for (let i = 0; i < this.boardRows; i++) {
-      for (let j = 0; j < this.boardColumns; j++) {
-        this.boardInputs[i][j].addEventListener("click", () => {
-          this.selectSquare(this.boardInputs[i][j]);
-        });
+    if (this.boardInputs){
+      for (let i = 0; i < this.boardRows; i++) {
+        for (let j = 0; j < this.boardColumns; j++) {
+          this.boardInputs[i][j].addEventListener("click", () => {
+            this.selectSquare(this.boardInputs[i][j]);
+          });
+        }
       }
     }
+    
   }
 
   // Listener al dar click en un cuadro

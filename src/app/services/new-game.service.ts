@@ -11,7 +11,9 @@ export class NewGameService {
     private _boardService: BoardService
   ) { }
 
+  // Menu new game
   newGame(): void {
-    
+    console.log("new game!!!");
+    this._boardService.cleanBoard();
   }
 }

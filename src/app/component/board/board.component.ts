@@ -5,6 +5,7 @@ import { Player } from '../../classes/player';
 // Services
 import { GameConfig } from '../../services/game-config';
 import { NewGameService } from '../../services/new-game.service';
+import { BoardService } from '../../services/board.service';
 
 @Component({
   selector: 'app-board',
@@ -19,9 +20,11 @@ export class BoardComponent implements OnInit {
   players: Player[];
 
   // Board
+  
   boardRows: number;
   boardColumns: number;
   boardInputs = [];
+  
 
   // Win Condition
   winConditionArrow: number;
@@ -29,7 +32,8 @@ export class BoardComponent implements OnInit {
   winner = false;
 
   constructor(
-    public _newGameService: NewGameService
+    public _newGameService: NewGameService,
+    public _boardService: BoardService
   ) { 
     // Players
     this.player_1 = GameConfig.players.player_1;
@@ -38,9 +42,11 @@ export class BoardComponent implements OnInit {
       this.player_1,
       this.player_2,
     ];
+    
     // Board
     this.boardRows = GameConfig.board.rows;
     this.boardColumns = GameConfig.board.columns;
+    
     // Win Condition
     this.winConditionArrow = GameConfig.winCondition;
   }

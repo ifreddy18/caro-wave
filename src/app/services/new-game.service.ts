@@ -7,13 +7,11 @@ import { BoardService } from './board.service';
 })
 export class NewGameService {
 
- 
-  
   constructor(
     private _boardService: BoardService
   ) { }
 
   newGame(): void {
-
+    
   }
 }

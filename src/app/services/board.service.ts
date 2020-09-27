@@ -16,6 +16,10 @@ export class BoardService {
     // Board
     this.boardRows = GameConfig.board.rows;
     this.boardColumns = GameConfig.board.columns;
+
+    for (let i = 0; i < this.boardRows; i++) {
+      this.boardInputs[i] = [];
+    }
   }
 
   createBoard(): void {

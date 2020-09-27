@@ -20,7 +20,6 @@ export class BoardComponent implements OnInit {
 
   // Win Condition
   winConditionArrow: number;
-  //cont = 0;
   winner = false;
 
   constructor(
@@ -39,14 +38,12 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("ngOnInit")
     this.initSquares();
     this.player_1.turn = true;
   }
 
   // Init Squares and add Event Listeners
   initSquares(): void {
-    console.log("initSquares")
     // Squares
     var squares = [];
     for (let i = 0; i < (this._boardService.boardRows * this._boardService.boardColumns); i++) {
@@ -56,13 +53,11 @@ export class BoardComponent implements OnInit {
     this._boardService.createBoard(squares);
 
     // EventListeners
-    if (this._boardService.boardInputs) {
-      for (let i = 0; i < this._boardService.boardRows; i++) {
-        for (let j = 0; j < this._boardService.boardColumns; j++) {
-          this._boardService.boardInputs[i][j].addEventListener("click", () => {
-            this.selectSquare(this._boardService.boardInputs[i][j]);
-          });
-        }
+    for (let i = 0; i < this._boardService.boardRows; i++) {
+      for (let j = 0; j < this._boardService.boardColumns; j++) {
+        this._boardService.boardInputs[i][j].addEventListener("click", () => {
+          this.selectSquare(this._boardService.boardInputs[i][j]);
+        });
       }
     }
 
@@ -96,7 +91,6 @@ export class BoardComponent implements OnInit {
 
   // Evalua el tablero y realiza los cambios CSS en caso de que haya un ganador
   evaluateBoard(row_index, col_index, playerFigure) {
-    console.log(`[row][col]:[${row_index}][${col_index}]`);
     // Evaluar condiciones
     // cond = 4 => vertical, horizontal, diagonal 1 y diagonal 2
     for (let condition = 1; condition <= 4; condition++) {
@@ -116,14 +110,7 @@ export class BoardComponent implements OnInit {
       } else if (playerFigure == this.player_2.figure) {
         playerWinner = this.player_2.name;
       }
-
-      /*
-      this.player_win.innerText = `${playerWinner} WON!!!`;
-      this.end_game_modal.style.display = "block";
-      */
-    } else {
-      return console.log("Next player's turn");
-    }
+    } 
   }
 
   // Evalua que se cumplan las condiciones de victoia
@@ -303,17 +290,9 @@ export class BoardComponent implements OnInit {
     if (this.player_1.turn) {
       this.player_1.turn = false;
       this.player_2.turn = true;
-      /*
-      this.label_player_1.classList.remove("active_turn");
-      this.label_player_2.classList.add("active_turn");
-      */
     } else if (this.player_2.turn) {
       this.player_1.turn = true;
       this.player_2.turn = false;
-      /*
-      this.label_player_1.classList.add("active_turn");
-      this.label_player_2.classList.remove("active_turn");
-      */
     } else {
       console.log("Error: No player selected");
     }

@@ -12,8 +12,4 @@ export class MenuComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  selectSquare(square): void {
-    
-  }
-
 }

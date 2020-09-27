@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
+// Components
 import { Player } from '../../classes/player';
-import { Config } from '../../services/config';
+// Services
+import { GameConfig } from '../../services/game-config';
+import { NewGameService } from '../../services/new-game.service';
 
 @Component({
   selector: 'app-board',
@@ -16,38 +19,44 @@ export class BoardComponent implements OnInit {
   players: Player[];
 
   // Board
-  boardRows: number = 12;
-  boardColumns: number = 16;
-  boardInputs = [[], [], [], [], [], [], [], [], [], [], [], []]; // boardRows 12
+  boardRows: number;
+  boardColumns: number;
+  boardInputs = [];
 
   // Win Condition
   winConditionArrow: number;
   cont = 0;
   winner = false;
 
-  constructor() { 
+  constructor(
+    public _newGameService: NewGameService
+  ) { 
     // Players
-    this.player_1 = Config.players.player_1;
-    this.player_2 = Config.players.player_2;
-
+    this.player_1 = GameConfig.players.player_1;
+    this.player_2 = GameConfig.players.player_2;
     this.players = [
       this.player_1,
       this.player_2,
     ];
-
-    this.winConditionArrow = Config.winCondition;
-    
+    // Board
+    this.boardRows = GameConfig.board.rows;
+    this.boardColumns = GameConfig.board.columns;
+    // Win Condition
+    this.winConditionArrow = GameConfig.winCondition;
   }
 
   ngOnInit(): void {
+    console.log("ngOnInit")
     this.initSquares();
     this.player_1.turn = true;
   }
 
   // Init Squares and add Event Listeners
   initSquares(): void {
+    console.log("initSquares")
     // Squares
     for (let i = 0; i < this.boardRows; i++) {
+      this.boardInputs[i] = [];
       for (let j = 0; j < this.boardColumns; j++) {
         this.boardInputs[i][j] = document.getElementsByClassName("square")[this.cont];
         this.cont++;
@@ -56,6 +65,8 @@ export class BoardComponent implements OnInit {
         }
       }
     }
+
+    console.log(this.boardInputs);
 
     // EventListeners
     if (this.boardInputs){

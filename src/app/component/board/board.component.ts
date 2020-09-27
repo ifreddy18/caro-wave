@@ -18,13 +18,6 @@ export class BoardComponent implements OnInit {
   player_2: Player;
   players: Player[];
 
-  // Board
-  /*
-  boardRows: number;
-  boardColumns: number;
-  boardInputs = [];
-  */
-
   // Win Condition
   winConditionArrow: number;
   //cont = 0;
@@ -40,12 +33,6 @@ export class BoardComponent implements OnInit {
       this.player_1,
       this.player_2,
     ];
-
-    // Board
-    /*
-    this.boardRows = GameConfig.board.rows;
-    this.boardColumns = GameConfig.board.columns;
-    */
 
     // Win Condition
     this.winConditionArrow = GameConfig.winCondition;

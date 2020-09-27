@@ -39,12 +39,13 @@ export class BoardService {
   // Limpia el tablero para una nueva partida
   cleanBoard(): void {
     for (let i = 0; i < this.boardRows; i++) {
-      for(let j = 0; j < this.boardColumns; j++)
-        this.boardInputs[i][j].value = "";/*
+      for(let j = 0; j < this.boardColumns; j++) {
+        this.boardInputs[i][j].value = "";
         this.boardInputs[i][j].disabled = false;
         this.boardInputs[i][j].classList.remove("winSquare");
         this.boardInputs[i][j].classList.remove("figure-player-one");
-        this.boardInputs[i][j].classList.remove("figure-player-two");*/
+        this.boardInputs[i][j].classList.remove("figure-player-two");
+      }
     }
   }
 }

@@ -24,7 +24,7 @@ export class BoardService {
   }
 
   // Crea el board desde la plantilla de BoardComponent
-  createBoard(squares: Array<any>): void {
+  createBoard(squares: Array<HTMLObjectElement>): void {
     for (let i = 0; i < this.boardRows; i++) {
       for (let j = 0; j < this.boardColumns; j++) {
         this.boardInputs[i][j] = squares[this.cont];

@@ -91,10 +91,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
     inputSquare.disabled = "disabled";
 
     // Win Condition
-    /*
-    let row_index = parseInt(square.getAttribute("data-row-index"));
-    let col_index = parseInt(square.getAttribute("data-col-index"));
-    */
     this.evaluateBoard(row_index, col_index, playerFigure);
 
   }

@@ -11,7 +11,6 @@ export class BoardService {
   // Board
   boardRows: number;
   boardColumns: number;
-  //boardIndexSquares: Array<Square>;
   boardInputs = [];
   cont = 0;
   
@@ -19,8 +18,6 @@ export class BoardService {
     // Board
     this.boardRows = GameConfig.board.rows;
     this.boardColumns = GameConfig.board.columns;
-
-    //this.boardIndexSquares = this.createBoard();
 
     for (let i = 0; i < this.boardRows; i++) {
       this.boardInputs[i] = [];

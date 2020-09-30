@@ -1,0 +1,13 @@
+<ul id="board-grid">
+    <li *ngFor="let square of boardIndexSquares">
+        <input
+            class="square"
+            type="button"
+            value=""
+            (click)="selectSquare(
+                _boardService.boardInputs[square.rowIndex][square.colIndex], 
+                square.rowIndex, square.colIndex
+                )"
+            >
+    </li>
+</ul>

@@ -1,17 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 
-// Components
+// Classes
 import { Player } from '../../classes/player';
+import { Square } from '../../classes/square';
 // Services
 import { GameConfig } from '../../services/game-config';
 import { BoardService } from '../../services/board.service';
 
 @Component({
   selector: 'app-board',
-  templateUrl: './board.component.html',
+  templateUrl: './board-2.component.html',
   styleUrls: ['./board.component.scss']
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent implements OnInit, AfterViewInit {
 
   // Create Players
   player_1: Player;
@@ -21,6 +22,9 @@ export class BoardComponent implements OnInit {
   // Win Condition
   winConditionArrow: number;
   winner = false;
+
+  // Board
+  boardIndexSquares: Array<Square>;
 
   constructor(
     public _boardService: BoardService
@@ -35,11 +39,17 @@ export class BoardComponent implements OnInit {
 
     // Win Condition
     this.winConditionArrow = GameConfig.winCondition;
+
+    // Board generate
+    this.boardIndexSquares = _boardService.createBoard();
   }
 
   ngOnInit(): void {
-    this.initSquares();
     this.player_1.turn = true;
+  }
+
+  ngAfterViewInit(): void{
+    this.initSquares();
   }
 
   // Init Squares and add Event Listeners
@@ -50,41 +60,41 @@ export class BoardComponent implements OnInit {
       squares[i] = document.getElementsByClassName("square")[i];
     }
 
-    this._boardService.createBoard(squares);
-
-    // EventListeners
-    for (let i = 0; i < this._boardService.boardRows; i++) {
-      for (let j = 0; j < this._boardService.boardColumns; j++) {
-        this._boardService.boardInputs[i][j].addEventListener("click", () => {
-          this.selectSquare(this._boardService.boardInputs[i][j]);
-        });
-      }
-    }
-
+    this._boardService.assignBoard(squares);
+    console.log("initSquares:");
+    console.log(squares); 
+    
   }
 
+  setBoardInputs(i: number, j: number): void{
+    this.selectSquare(this._boardService.boardInputs[i][j], i, j);
+  }
+
+
   // Listener al dar click en un cuadro
-  selectSquare(square): void {
+  selectSquare(inputSquare, row_index, col_index): void {
     // Square status
     var playerFigure;
 
     if (this.player_1.turn) {
-      square.value = this.player_1.figure;
+      inputSquare.value = this.player_1.figure;
       playerFigure = this.player_1.figure;
     } else if (this.player_2.turn) {
-      square.value = this.player_2.figure;
+      inputSquare.value = this.player_2.figure;
       playerFigure = this.player_2.figure;
     } else {
       console.log("Error: No player selected");
     }
 
-    this.customSquare(square, playerFigure);
+    this.customSquare(inputSquare, playerFigure);
     this.nextTurn();
-    square.disabled = "disabled";
+    inputSquare.disabled = "disabled";
 
     // Win Condition
+    /*
     let row_index = parseInt(square.getAttribute("data-row-index"));
     let col_index = parseInt(square.getAttribute("data-col-index"));
+    */
     this.evaluateBoard(row_index, col_index, playerFigure);
 
   }

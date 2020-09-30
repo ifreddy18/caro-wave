@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { GameConfig } from './game-config';
+import { Square } from '../classes/square';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ export class BoardService {
   // Board
   boardRows: number;
   boardColumns: number;
+  //boardIndexSquares: Array<Square>;
   boardInputs = [];
   cont = 0;
   
@@ -18,13 +20,29 @@ export class BoardService {
     this.boardRows = GameConfig.board.rows;
     this.boardColumns = GameConfig.board.columns;
 
+    //this.boardIndexSquares = this.createBoard();
+
     for (let i = 0; i < this.boardRows; i++) {
       this.boardInputs[i] = [];
     }
   }
 
-  // Crea el board desde la plantilla de BoardComponent
-  createBoard(squares: Array<HTMLObjectElement>): void {
+  // Crea el array para usarse en la plantilla del BoardComponent
+  createBoard(): Array<Square>{
+    let boardIndexSquares: Array<Square> = [];
+
+    for (let i = 0; i < this.boardRows; i++){
+      for (let j = 0; j < this.boardColumns; j++){
+        boardIndexSquares.push(new Square(i,j));
+      }
+    }
+
+    return boardIndexSquares;
+  }
+
+
+  // Asigna el board desde la plantilla de BoardComponent
+  assignBoard(squares: Array<HTMLObjectElement>): void {
     for (let i = 0; i < this.boardRows; i++) {
       for (let j = 0; j < this.boardColumns; j++) {
         this.boardInputs[i][j] = squares[this.cont];

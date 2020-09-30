@@ -1,4 +1,6 @@
 export class Square {
-    row: number;
-    col: number;
+    constructor(
+        public rowIndex: number,
+        public colIndex: number
+    ){}
 }

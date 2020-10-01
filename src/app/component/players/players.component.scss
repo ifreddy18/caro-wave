@@ -1,0 +1,27 @@
+@import '../../../styles.scss';
+
+#container{
+    width: 300px;
+    height: 70px;
+    float: center;
+    text-align: center;
+    margin: 0px auto;
+}
+
+h3 {
+    font-size: 30px;
+    margin-top: -70px;
+    line-height: 70px;
+    color: white;
+    text-shadow: white 2px 0 8px;
+}
+
+.player_1_turn {
+    color: $custom-cian;
+    text-shadow: $custom-cian 2px 0 15px;
+}
+
+.player_2_turn {
+    color: $custom-red;
+    text-shadow: $custom-red 2px 0 15px;
+}

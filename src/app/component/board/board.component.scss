@@ -5,8 +5,8 @@
 }
 
 #board-grid{
-    width: 640px;
-    height: 480px;
+    width: 40px * $boardColumns;
+    height: 40px * $boardRows;
     display: grid;
     gap: 2px;
     grid-template-rows: repeat($boardRows, 1fr);

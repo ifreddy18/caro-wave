@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 // Components
-import { MenuComponent } from '../menu/menu.component';
-import { BoardComponent } from '../board/board.component';
+//import { MenuComponent } from '../menu/menu.component';
+//import { BoardComponent } from '../board/board.component';
 
 @Component({
   selector: 'app-game',

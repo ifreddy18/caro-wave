@@ -1,0 +1,59 @@
+@import '../../../styles.scss';
+
+#modal{
+    width: 100%;
+    height: 100%;
+    background: rgba($color: $custom-light-bg, $alpha: 0.5);
+    position: fixed;
+    top: 0px;
+}
+
+#content-modal{
+    width: 400px;
+    height: 200px;
+    margin: 100px auto;
+    padding-bottom: 10px;
+    text-align: center;
+    border-radius: 5px;
+    background: $custom-dark-bg;
+    box-shadow: 
+        5px 5px 10px $custom-cian,
+        -5px -5px 10px $custom-green, 
+        -5px 5px 10px $custom-green,
+        5px -5px 10px $custom-green;
+
+    h3 {
+        font-size: 40px;
+        margin: 15px auto;
+        padding: 20px;
+        padding-top: 10px;
+        color: $custom-purple;
+        text-shadow: $custom-purple 2px 0 15px;
+    }
+
+    input[type="button"]{
+        width: 120px;
+        height: 40px;
+        font-size: 18px;
+        float: none;
+        border: 2px solid $custom-green;
+        border-radius: 5px;
+        background-color: $custom-dark-grey;
+        color: $custom-green;
+        text-shadow: $custom-green 1px 0 5px;
+        box-shadow: 
+            0px 0px 8px $custom-green,
+            0px 0px 8px $custom-green inset;
+        cursor: pointer;
+        transition: all 300ms;
+    }
+}
+
+#exit-modal {
+    float: right;
+    font-size: 30px;
+    margin-right: 10px;
+    cursor: pointer;
+    color: $custom-green;
+    text-shadow: $custom-green 2px 0 15px;
+}

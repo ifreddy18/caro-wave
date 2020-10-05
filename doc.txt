@@ -1,0 +1,16 @@
+Documentation
+
+===========================================
+How to change the number of rows and cols
+===========================================
+1. In game-config.ts change:
+
+    board: {
+        rows: 12,
+        columns: 16
+    }
+
+2. In src/styles.scss change the value of $boardRows and $boardColumns
+
+
+

@@ -9,6 +9,7 @@ import { SettingsComponent } from './component/settings/settings.component';
 import { BoardComponent } from './component/board/board.component';
 import { GameComponent } from './component/game/game.component';
 import { PlayersComponent } from './component/players/players.component';
+import { WinnerModalComponent } from './component/winner-modal/winner-modal.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { PlayersComponent } from './component/players/players.component';
     SettingsComponent,
     BoardComponent,
     GameComponent,
-    PlayersComponent
+    PlayersComponent,
+    WinnerModalComponent
   ],
   imports: [
     BrowserModule,

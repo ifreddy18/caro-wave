@@ -2,17 +2,22 @@ import { Injectable } from '@angular/core';
 
 import { GameConfig } from './game-config';
 import { Square } from '../classes/square';
+import { Player } from '../classes/player';
 
 @Injectable({
   providedIn: 'root'
 })
-export class BoardService {
+export class GameService {
 
   // Board
   boardRows: number;
   boardColumns: number;
   boardInputs = [];
   cont = 0;
+
+  // Winner
+  winner: Player;
+  showModal: boolean;
   
   constructor() {
     // Board
@@ -22,6 +27,10 @@ export class BoardService {
     for (let i = 0; i < this.boardRows; i++) {
       this.boardInputs[i] = [];
     }
+
+    // Winner
+    this.setWinner(null);
+    this.setModal(false)
   }
 
   // Crea el array para usarse en la plantilla del BoardComponent
@@ -36,7 +45,6 @@ export class BoardService {
 
     return boardIndexSquares;
   }
-
 
   // Asigna el board desde la plantilla de BoardComponent
   assignBoard(squares: Array<HTMLObjectElement>): void {
@@ -63,4 +71,44 @@ export class BoardService {
       }
     }
   }
+
+  // Disabled board when a player wins
+  disabledBoard(): void {
+    for (let i = 0; i < this.boardRows; i++) {
+      for(let j = 0; j < this.boardColumns; j++) {
+        this.boardInputs[i][j].disabled = 'disabled';
+      }
+    }
+  }
+
+  // Create a new game
+  newGame(): void {
+    console.log("new game!!!");
+    this.setWinner(null);
+    this.cleanBoard();
+  }
+
+  // 
+  gameOver(winner: Player): void{
+    this.setWinner(winner);
+    this.setModal(true);
+    this.disabledBoard();
+  }
+  
+  // Get and Set
+  getWinner(): Player {
+    return this.winner;
+  }
+  
+  setWinner(winner: Player): void{
+    this.winner = winner;
+  } 
+
+  getModal(): boolean {
+    return this.showModal;
+  }
+  
+  setModal(showModal: boolean): void{
+    this.showModal = showModal;
+  } 
 }

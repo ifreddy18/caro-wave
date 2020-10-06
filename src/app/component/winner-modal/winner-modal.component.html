@@ -1,8 +1,8 @@
-<div id="modal">
+<div *ngIf="_gameService.getModal()" id="modal">
     <div id="content-modal">
-        <span id="exit-modal">&times;</span>
+        <span id="exit-modal" (click)="closeModal()">&times;</span>
         <div class="clearfix"></div>
-        <h3>Player 1 won!!!</h3>
-        <input type="button" value="New game">
+        <h3>{{_gameService.winner.name}} ({{_gameService.winner.figure}}) won!!!</h3>
+        <input type="button" value="New game" (click)="newGame()">
     </div>
 </div>

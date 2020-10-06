@@ -19,3 +19,10 @@ $custom-purple: #7b3dba;
 $custom-dark-grey: #1e1f1c;
 $boardRows: 12;
 $boardColumns: 16;
+
+%logo-text {
+    display: block;
+    letter-spacing: 2px;
+    color: $custom-cian;
+    text-shadow: $custom-cian 2px 0 15px;
+}

@@ -1,1 +1,8 @@
-<p>winner-modal works!</p>
+<div *ngIf="_gameService.getModal()" id="modal">
+    <div id="content-modal">
+        <span id="exit-modal" (click)="closeModal()">&times;</span>
+        <div class="clearfix"></div>
+        <h3>{{_gameService.winner.name}} ({{_gameService.winner.figure}}) won!!!</h3>
+        <input type="button" value="New game" (click)="newGame()">
+    </div>
+</div>

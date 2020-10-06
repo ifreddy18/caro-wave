@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { NewGameService } from '../../services/new-game.service';
+import { GameService } from '../../services/game.service';
 
 @Component({
   selector: 'app-menu',
@@ -10,14 +10,14 @@ import { NewGameService } from '../../services/new-game.service';
 export class MenuComponent implements OnInit {
 
   constructor(
-    public _newGameService: NewGameService
+    private _gameService: GameService
   ) { }
 
   ngOnInit(): void {
   }
 
   newGame(): void{
-    this._newGameService.newGame();
+    this._gameService.newGame();
   }
 
 }

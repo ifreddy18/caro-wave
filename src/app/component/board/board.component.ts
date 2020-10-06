@@ -5,11 +5,11 @@ import { Player } from '../../classes/player';
 import { Square } from '../../classes/square';
 // Services
 import { GameConfig } from '../../services/game-config';
-import { BoardService } from '../../services/board.service';
+import { GameService } from '../../services/game.service';
 
 @Component({
   selector: 'app-board',
-  templateUrl: './board-2.component.html',
+  templateUrl: './board.component.html',
   styleUrls: ['./board.component.scss']
 })
 export class BoardComponent implements OnInit, AfterViewInit {
@@ -27,7 +27,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
   boardIndexSquares: Array<Square>;
 
   constructor(
-    public _boardService: BoardService
+    public _gameService: GameService
   ) {
     // Players
     this.player_1 = GameConfig.players.player_1;
@@ -41,7 +41,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     this.winConditionArrow = GameConfig.winCondition;
 
     // Board generate
-    this.boardIndexSquares = _boardService.createBoard();
+    this.boardIndexSquares = _gameService.createBoard();
   }
 
   ngOnInit(): void {
@@ -56,18 +56,18 @@ export class BoardComponent implements OnInit, AfterViewInit {
   initSquares(): void {
     // Squares
     var squares = [];
-    for (let i = 0; i < (this._boardService.boardRows * this._boardService.boardColumns); i++) {
+    for (let i = 0; i < (this._gameService.boardRows * this._gameService.boardColumns); i++) {
       squares[i] = document.getElementsByClassName("square")[i];
     }
 
-    this._boardService.assignBoard(squares);
+    this._gameService.assignBoard(squares);
     console.log("initSquares:");
     console.log(squares); 
     
   }
 
   setBoardInputs(i: number, j: number): void{
-    this.selectSquare(this._boardService.boardInputs[i][j], i, j);
+    this.selectSquare(this._gameService.boardInputs[i][j], i, j);
   }
 
 
@@ -111,11 +111,14 @@ export class BoardComponent implements OnInit, AfterViewInit {
     if (this.winner) {
       console.log("Ha ganado el jugador: " + playerFigure);
       let playerWinner;
+
       if (playerFigure == this.player_1.figure) {
-        playerWinner = this.player_1.name;
+        this._gameService.gameOver(this.player_1);
       } else if (playerFigure == this.player_2.figure) {
-        playerWinner = this.player_2.name;
+        this._gameService.gameOver(this.player_2);
       }
+
+      this.winner = false;
     } 
   }
 
@@ -126,30 +129,30 @@ export class BoardComponent implements OnInit, AfterViewInit {
         for (let x = 0; x <= this.winConditionArrow; x++) {
           try {
             if (
-              this._boardService.boardInputs[row_index + (x - 4)][col_index + (x - 4)]
+              this._gameService.boardInputs[row_index + (x - 4)][col_index + (x - 4)]
                 .value == playerFigure &&
-              this._boardService.boardInputs[row_index + (x - 3)][col_index + (x - 3)]
+              this._gameService.boardInputs[row_index + (x - 3)][col_index + (x - 3)]
                 .value == playerFigure &&
-              this._boardService.boardInputs[row_index + (x - 2)][col_index + (x - 2)]
+              this._gameService.boardInputs[row_index + (x - 2)][col_index + (x - 2)]
                 .value == playerFigure &&
-              this._boardService.boardInputs[row_index + (x - 1)][col_index + (x - 1)]
+              this._gameService.boardInputs[row_index + (x - 1)][col_index + (x - 1)]
                 .value == playerFigure &&
-              this._boardService.boardInputs[row_index + x][col_index + x].value ==
+              this._gameService.boardInputs[row_index + x][col_index + x].value ==
               playerFigure
             ) {
-              this._boardService.boardInputs[row_index + (x - 4)][
+              this._gameService.boardInputs[row_index + (x - 4)][
                 col_index + (x - 4)
               ].classList.add("winSquare");
-              this._boardService.boardInputs[row_index + (x - 3)][
+              this._gameService.boardInputs[row_index + (x - 3)][
                 col_index + (x - 3)
               ].classList.add("winSquare");
-              this._boardService.boardInputs[row_index + (x - 2)][
+              this._gameService.boardInputs[row_index + (x - 2)][
                 col_index + (x - 2)
               ].classList.add("winSquare");
-              this._boardService.boardInputs[row_index + (x - 1)][
+              this._gameService.boardInputs[row_index + (x - 1)][
                 col_index + (x - 1)
               ].classList.add("winSquare");
-              this._boardService.boardInputs[row_index + x][col_index + x].classList.add(
+              this._gameService.boardInputs[row_index + x][col_index + x].classList.add(
                 "winSquare"
               );
               this.winner = true;
@@ -165,30 +168,30 @@ export class BoardComponent implements OnInit, AfterViewInit {
         for (let x = 0; x <= this.winConditionArrow; x++) {
           try {
             if (
-              this._boardService.boardInputs[row_index + (x - 4)][col_index + (4 - x)]
+              this._gameService.boardInputs[row_index + (x - 4)][col_index + (4 - x)]
                 .value == playerFigure &&
-              this._boardService.boardInputs[row_index + (x - 3)][col_index + (3 - x)]
+              this._gameService.boardInputs[row_index + (x - 3)][col_index + (3 - x)]
                 .value == playerFigure &&
-              this._boardService.boardInputs[row_index + (x - 2)][col_index + (2 - x)]
+              this._gameService.boardInputs[row_index + (x - 2)][col_index + (2 - x)]
                 .value == playerFigure &&
-              this._boardService.boardInputs[row_index + (x - 1)][col_index + (1 - x)]
+              this._gameService.boardInputs[row_index + (x - 1)][col_index + (1 - x)]
                 .value == playerFigure &&
-              this._boardService.boardInputs[row_index + x][col_index - x].value ==
+              this._gameService.boardInputs[row_index + x][col_index - x].value ==
               playerFigure
             ) {
-              this._boardService.boardInputs[row_index + (x - 4)][
+              this._gameService.boardInputs[row_index + (x - 4)][
                 col_index + (4 - x)
               ].classList.add("winSquare");
-              this._boardService.boardInputs[row_index + (x - 3)][
+              this._gameService.boardInputs[row_index + (x - 3)][
                 col_index + (3 - x)
               ].classList.add("winSquare");
-              this._boardService.boardInputs[row_index + (x - 2)][
+              this._gameService.boardInputs[row_index + (x - 2)][
                 col_index + (2 - x)
               ].classList.add("winSquare");
-              this._boardService.boardInputs[row_index + (x - 1)][
+              this._gameService.boardInputs[row_index + (x - 1)][
                 col_index + (1 - x)
               ].classList.add("winSquare");
-              this._boardService.boardInputs[row_index + x][col_index - x].classList.add(
+              this._gameService.boardInputs[row_index + x][col_index - x].classList.add(
                 "winSquare"
               );
               this.winner = true;
@@ -204,30 +207,30 @@ export class BoardComponent implements OnInit, AfterViewInit {
         for (let x = 0; x <= this.winConditionArrow; x++) {
           try {
             if (
-              this._boardService.boardInputs[row_index][col_index + (x - 4)].value ==
+              this._gameService.boardInputs[row_index][col_index + (x - 4)].value ==
               playerFigure &&
-              this._boardService.boardInputs[row_index][col_index + (x - 3)].value ==
+              this._gameService.boardInputs[row_index][col_index + (x - 3)].value ==
               playerFigure &&
-              this._boardService.boardInputs[row_index][col_index + (x - 2)].value ==
+              this._gameService.boardInputs[row_index][col_index + (x - 2)].value ==
               playerFigure &&
-              this._boardService.boardInputs[row_index][col_index + (x - 1)].value ==
+              this._gameService.boardInputs[row_index][col_index + (x - 1)].value ==
               playerFigure &&
-              this._boardService.boardInputs[row_index][col_index + x].value ==
+              this._gameService.boardInputs[row_index][col_index + x].value ==
               playerFigure
             ) {
-              this._boardService.boardInputs[row_index][
+              this._gameService.boardInputs[row_index][
                 col_index + (x - 4)
               ].classList.add("winSquare");
-              this._boardService.boardInputs[row_index][
+              this._gameService.boardInputs[row_index][
                 col_index + (x - 3)
               ].classList.add("winSquare");
-              this._boardService.boardInputs[row_index][
+              this._gameService.boardInputs[row_index][
                 col_index + (x - 2)
               ].classList.add("winSquare");
-              this._boardService.boardInputs[row_index][
+              this._gameService.boardInputs[row_index][
                 col_index + (x - 1)
               ].classList.add("winSquare");
-              this._boardService.boardInputs[row_index][col_index + x].classList.add(
+              this._gameService.boardInputs[row_index][col_index + x].classList.add(
                 "winSquare"
               );
               this.winner = true;
@@ -243,30 +246,30 @@ export class BoardComponent implements OnInit, AfterViewInit {
         for (let x = 0; x <= this.winConditionArrow; x++) {
           try {
             if (
-              this._boardService.boardInputs[row_index + (x - 4)][col_index].value ==
+              this._gameService.boardInputs[row_index + (x - 4)][col_index].value ==
               playerFigure &&
-              this._boardService.boardInputs[row_index + (x - 3)][col_index].value ==
+              this._gameService.boardInputs[row_index + (x - 3)][col_index].value ==
               playerFigure &&
-              this._boardService.boardInputs[row_index + (x - 2)][col_index].value ==
+              this._gameService.boardInputs[row_index + (x - 2)][col_index].value ==
               playerFigure &&
-              this._boardService.boardInputs[row_index + (x - 1)][col_index].value ==
+              this._gameService.boardInputs[row_index + (x - 1)][col_index].value ==
               playerFigure &&
-              this._boardService.boardInputs[row_index + x][col_index].value ==
+              this._gameService.boardInputs[row_index + x][col_index].value ==
               playerFigure
             ) {
-              this._boardService.boardInputs[row_index + (x - 4)][
+              this._gameService.boardInputs[row_index + (x - 4)][
                 col_index
               ].classList.add("winSquare");
-              this._boardService.boardInputs[row_index + (x - 3)][
+              this._gameService.boardInputs[row_index + (x - 3)][
                 col_index
               ].classList.add("winSquare");
-              this._boardService.boardInputs[row_index + (x - 2)][
+              this._gameService.boardInputs[row_index + (x - 2)][
                 col_index
               ].classList.add("winSquare");
-              this._boardService.boardInputs[row_index + (x - 1)][
+              this._gameService.boardInputs[row_index + (x - 1)][
                 col_index
               ].classList.add("winSquare");
-              this._boardService.boardInputs[row_index + x][col_index].classList.add(
+              this._gameService.boardInputs[row_index + x][col_index].classList.add(
                 "winSquare"
               );
               this.winner = true;

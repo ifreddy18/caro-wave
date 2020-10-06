@@ -5,6 +5,11 @@
     font-family: monospace;
 }
 
+.clearfix {
+    clear: both;
+    float: none;
+}
+
 $custom-dark-bg: #1e1f1c;
 $custom-light-bg: #272822;
 $custom-cian: #03cec2;

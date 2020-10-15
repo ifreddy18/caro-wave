@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { GameConfig } from './game-config';
+import { GameConfigService } from './game-config.service';
 import { Square } from '../classes/square';
 import { Player } from '../classes/player';
 
@@ -19,10 +19,12 @@ export class GameService {
   winner: Player;
   showModal: boolean;
   
-  constructor() {
+  constructor(
+    private _gameConfigService: GameConfigService
+  ) {
     // Board
-    this.boardRows = GameConfig.board.rows;
-    this.boardColumns = GameConfig.board.columns;
+    this.boardRows = _gameConfigService.getBoard('row');
+    this.boardColumns = _gameConfigService.getBoard('col');
 
     for (let i = 0; i < this.boardRows; i++) {
       this.boardInputs[i] = [];

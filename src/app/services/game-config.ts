@@ -9,6 +9,6 @@ export var GameConfig = {
         rows: 12,
         columns: 16
     },
-    winCondition: 5
+    winCondition: 4
 
 }

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {Location} from '@angular/common'
+import { Location } from '@angular/common'
+
+import { GameConfigService } from '../../services/game-config.service';
 
 @Component({
   selector: 'app-settings',
@@ -9,7 +11,8 @@ import {Location} from '@angular/common'
 export class SettingsComponent implements OnInit {
 
   constructor(
-    private _location: Location
+    private _location: Location,
+    public _gameConfigService: GameConfigService
   ) { }
 
   ngOnInit(): void {
@@ -17,7 +20,14 @@ export class SettingsComponent implements OnInit {
 
   previousPage(){
     this._location.back();
-    console.log("Go back");
+  }
+
+  resetSettings(){
+
+  }
+
+  saveAndStart(){
+    
   }
 
 }

@@ -4,7 +4,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Player } from '../../classes/player';
 import { Square } from '../../classes/square';
 // Services
-import { GameConfig } from '../../services/game-config';
+import { GameConfigService } from '../../services/game-config.service';
 import { GameService } from '../../services/game.service';
 
 @Component({
@@ -27,18 +27,19 @@ export class BoardComponent implements OnInit, AfterViewInit {
   boardIndexSquares: Array<Square>;
 
   constructor(
+    private _gameConfigService: GameConfigService,
     public _gameService: GameService
   ) {
     // Players
-    this.player_1 = GameConfig.players.player_1;
-    this.player_2 = GameConfig.players.player_2;
+    this.player_1 = _gameConfigService.getPlayer(1);
+    this.player_2 = _gameConfigService.getPlayer(2);
     this.players = [
       this.player_1,
       this.player_2,
     ];
 
     // Win Condition
-    this.winConditionArrow = GameConfig.winCondition;
+    this.winConditionArrow = _gameConfigService.getWinCondition();
 
     // Board generate
     this.boardIndexSquares = _gameService.createBoard();
@@ -48,7 +49,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     this.player_1.turn = true;
   }
 
-  ngAfterViewInit(): void{
+  ngAfterViewInit(): void {
     this.initSquares();
   }
 
@@ -62,14 +63,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     this._gameService.assignBoard(squares);
     console.log("initSquares:");
-    console.log(squares); 
-    
+    console.log(squares);
+
   }
 
-  setBoardInputs(i: number, j: number): void{
+  setBoardInputs(i: number, j: number): void {
     this.selectSquare(this._gameService.boardInputs[i][j], i, j);
   }
-
 
   // Listener al dar click en un cuadro
   selectSquare(inputSquare, row_index, col_index): void {
@@ -119,7 +119,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
       }
 
       this.winner = false;
-    } 
+    }
   }
 
   // Evalua que se cumplan las condiciones de victoia

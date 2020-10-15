@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Location} from '@angular/common'
 
 @Component({
   selector: 'app-settings',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private _location: Location
+  ) { }
 
   ngOnInit(): void {
+  }
+
+  previousPage(){
+    this._location.back();
+    console.log("Go back");
   }
 
 }

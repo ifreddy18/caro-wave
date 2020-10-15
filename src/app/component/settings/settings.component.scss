@@ -1,0 +1,47 @@
+@import '../../../styles.scss';
+
+h1{
+    @include logoText($custom-purple);
+    font-size: 70px;
+    margin-top: 70px;
+    padding-bottom: 20px;
+}
+
+#options{
+padding-top: 20px;
+padding-bottom: 20px;
+}
+
+label {
+    span{
+        font-size: 35px;
+        color: $custom-cian;
+        text-shadow: $custom-cian 1px 0 5px;
+    }
+
+    input[type="number"]{
+        @include borderLigths($custom-green, $custom-dark-bg);
+        width: 40px;
+        padding: 5px;
+        font-size: 30px;
+        text-align: center;
+    }
+}
+
+#buttons{
+    button{
+        @include borderLigths($custom-purple, $custom-dark-bg);
+        font-size: 20px;
+        width: 180px;
+        height: 40px;
+        margin: 15px;
+        margin-top: 20px;
+        cursor: pointer;
+    }
+
+    button:hover{
+        background-color: $custom-purple;
+        color: $custom-dark-bg;
+        font-weight: bold;
+    }
+}

@@ -16,8 +16,10 @@ export class GameService {
   cont = 0;
 
   // Winner
-  winner: Player;
+  winCondition: number;
+  winnerPlayer: Player;
   showModal: boolean;
+  winner = false;
   
   constructor(
     private _gameConfigService: GameConfigService
@@ -31,7 +33,8 @@ export class GameService {
     }
 
     // Winner
-    this.setWinner(null);
+    this.winCondition = _gameConfigService.getWinCondition();
+    this.setWinnerPlayer(null);
     this.setModal(false)
   }
 
@@ -86,24 +89,25 @@ export class GameService {
   // Create a new game
   newGame(): void {
     console.log("new game!!!");
-    this.setWinner(null);
+    this.setWinnerPlayer(null);
+    this.winner = false
     this.cleanBoard();
   }
 
   // 
   gameOver(winner: Player): void{
-    this.setWinner(winner);
+    this.setWinnerPlayer(winner);
     this.setModal(true);
     this.disabledBoard();
   }
   
   // Get and Set
-  getWinner(): Player {
-    return this.winner;
+  getWinnerPlayer(): Player {
+    return this.winnerPlayer;
   }
   
-  setWinner(winner: Player): void{
-    this.winner = winner;
+  setWinnerPlayer(winner: Player): void{
+    this.winnerPlayer = winner;
   } 
 
   getModal(): boolean {
@@ -113,4 +117,471 @@ export class GameService {
   setModal(showModal: boolean): void{
     this.showModal = showModal;
   } 
+
+
+  // Evaluate Win Condition methods
+  /**
+   * Evaluate if there a winner
+   * @param condition 1, 2, 3 or 4 (directions)
+   * @param row_index 
+   * @param col_index 
+   * @param playerFigure 
+   * return winner: boolean
+   */
+  evaluateWinCondition(row_index, col_index, playerFigure): boolean {
+    // Evaluar condiciones
+    // cond = 4 => vertical, horizontal, diagonal 1 y diagonal 2
+    for (let condition = 1; condition <= 4; condition++) {
+      try {
+        switch(this.winCondition){
+          case 3:
+            this.winCondition_3(condition, row_index, col_index, playerFigure);
+            break;
+          case 4: 
+            this.winCondition_4(condition, row_index, col_index, playerFigure);
+            break;
+          case 5:
+            this.winCondition_5(condition, row_index, col_index, playerFigure);
+            break;
+        }
+         
+      } catch (e) {
+        // Ignore TypeError: Board border
+      }
+
+    }
+
+    return this.winner;
+  }
+
+  // If winCondtion == 3
+  winCondition_3(condition, row_index, col_index, playerFigure){
+    switch (condition) {
+          case 1: // Diagonal \
+            for (let x = 0; x <= this.winCondition; x++) {
+              try {
+                if (
+                  this.boardInputs[row_index + (x - 2)][col_index + (x - 2)]
+                    .value == playerFigure &&
+                  this.boardInputs[row_index + (x - 1)][col_index + (x - 1)]
+                    .value == playerFigure &&
+                  this.boardInputs[row_index + x][col_index + x].value ==
+                  playerFigure
+                ) {
+                  this.boardInputs[row_index + (x - 2)][
+                    col_index + (x - 2)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + (x - 1)][
+                    col_index + (x - 1)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + x][col_index + x].classList.add(
+                    "winSquare"
+                  );
+                  this.winner = true;
+                  // No se cierra con break para evaluar si el jugador gano por más de un lado
+                }
+              } catch (e) {
+                // Ignore TypeError: Board border
+              }
+            }
+            break;
+
+          case 2: // Diagonal /
+            for (let x = 0; x <= this.winCondition; x++) {
+              try {
+                if (
+                  this.boardInputs[row_index + (x - 2)][col_index + (2 - x)]
+                    .value == playerFigure &&
+                  this.boardInputs[row_index + (x - 1)][col_index + (1 - x)]
+                    .value == playerFigure &&
+                  this.boardInputs[row_index + x][col_index - x].value ==
+                  playerFigure
+                ) {
+                  this.boardInputs[row_index + (x - 2)][
+                    col_index + (2 - x)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + (x - 1)][
+                    col_index + (1 - x)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + x][col_index - x].classList.add(
+                    "winSquare"
+                  );
+                  this.winner = true;
+                  // No se cierra con break para evaluar si el jugador gano por más de un lado
+                }
+              } catch (e) {
+                // Ignore TypeError: Board border
+              }
+            }
+            break;
+
+          case 3: // Horizontal
+            for (let x = 0; x <= this.winCondition; x++) {
+              try {
+                if (
+                  this.boardInputs[row_index][col_index + (x - 2)].value ==
+                  playerFigure &&
+                  this.boardInputs[row_index][col_index + (x - 1)].value ==
+                  playerFigure &&
+                  this.boardInputs[row_index][col_index + x].value ==
+                  playerFigure
+                ) {
+                  this.boardInputs[row_index][
+                    col_index + (x - 2)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index][
+                    col_index + (x - 1)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index][col_index + x].classList.add(
+                    "winSquare"
+                  );
+                  this.winner = true;
+                  // No se cierra con break para evaluar si el jugador gano por más de un lado
+                }
+              } catch (e) {
+                // Ignore TypeError: Board border
+              }
+            }
+            break;
+
+          case 4: // Vertical
+            for (let x = 0; x <= this.winCondition; x++) {
+              try {
+                if (
+                  this.boardInputs[row_index + (x - 2)][col_index].value ==
+                  playerFigure &&
+                  this.boardInputs[row_index + (x - 1)][col_index].value ==
+                  playerFigure &&
+                  this.boardInputs[row_index + x][col_index].value ==
+                  playerFigure
+                ) {
+                  this.boardInputs[row_index + (x - 2)][
+                    col_index
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + (x - 1)][
+                    col_index
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + x][col_index].classList.add(
+                    "winSquare"
+                  );
+                  this.winner = true;
+                }
+              } catch (e) {
+                // Ignore TypeError: Board border
+              }
+            }
+            break;
+
+          default:
+            break;
+        }
+  }
+
+  // If winCondtion == 4
+  winCondition_4(condition, row_index, col_index, playerFigure){
+    switch (condition) {
+          case 1: // Diagonal \
+            for (let x = 0; x <= this.winCondition; x++) {
+              try {
+                if (
+                  this.boardInputs[row_index + (x - 3)][col_index + (x - 3)]
+                    .value == playerFigure &&
+                  this.boardInputs[row_index + (x - 2)][col_index + (x - 2)]
+                    .value == playerFigure &&
+                  this.boardInputs[row_index + (x - 1)][col_index + (x - 1)]
+                    .value == playerFigure &&
+                  this.boardInputs[row_index + x][col_index + x].value ==
+                  playerFigure
+                ) {
+                  this.boardInputs[row_index + (x - 3)][
+                    col_index + (x - 3)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + (x - 2)][
+                    col_index + (x - 2)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + (x - 1)][
+                    col_index + (x - 1)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + x][col_index + x].classList.add(
+                    "winSquare"
+                  );
+                  this.winner = true;
+                  // No se cierra con break para evaluar si el jugador gano por más de un lado
+                }
+              } catch (e) {
+                // Ignore TypeError: Board border
+              }
+            }
+            break;
+
+          case 2: // Diagonal /
+            for (let x = 0; x <= this.winCondition; x++) {
+              try {
+                if (
+                  this.boardInputs[row_index + (x - 3)][col_index + (3 - x)]
+                    .value == playerFigure &&
+                  this.boardInputs[row_index + (x - 2)][col_index + (2 - x)]
+                    .value == playerFigure &&
+                  this.boardInputs[row_index + (x - 1)][col_index + (1 - x)]
+                    .value == playerFigure &&
+                  this.boardInputs[row_index + x][col_index - x].value ==
+                  playerFigure
+                ) {
+                  this.boardInputs[row_index + (x - 3)][
+                    col_index + (3 - x)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + (x - 2)][
+                    col_index + (2 - x)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + (x - 1)][
+                    col_index + (1 - x)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + x][col_index - x].classList.add(
+                    "winSquare"
+                  );
+                  this.winner = true;
+                  // No se cierra con break para evaluar si el jugador gano por más de un lado
+                }
+              } catch (e) {
+                // Ignore TypeError: Board border
+              }
+            }
+            break;
+
+          case 3: // Horizontal
+            for (let x = 0; x <= this.winCondition; x++) {
+              try {
+                if (
+                  this.boardInputs[row_index][col_index + (x - 3)].value ==
+                  playerFigure &&
+                  this.boardInputs[row_index][col_index + (x - 2)].value ==
+                  playerFigure &&
+                  this.boardInputs[row_index][col_index + (x - 1)].value ==
+                  playerFigure &&
+                  this.boardInputs[row_index][col_index + x].value ==
+                  playerFigure
+                ) {
+                  this.boardInputs[row_index][
+                    col_index + (x - 3)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index][
+                    col_index + (x - 2)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index][
+                    col_index + (x - 1)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index][col_index + x].classList.add(
+                    "winSquare"
+                  );
+                  this.winner = true;
+                  // No se cierra con break para evaluar si el jugador gano por más de un lado
+                }
+              } catch (e) {
+                // Ignore TypeError: Board border
+              }
+            }
+            break;
+
+          case 4: // Vertical
+            for (let x = 0; x <= this.winCondition; x++) {
+              try {
+                if (
+                  this.boardInputs[row_index + (x - 3)][col_index].value ==
+                  playerFigure &&
+                  this.boardInputs[row_index + (x - 2)][col_index].value ==
+                  playerFigure &&
+                  this.boardInputs[row_index + (x - 1)][col_index].value ==
+                  playerFigure &&
+                  this.boardInputs[row_index + x][col_index].value ==
+                  playerFigure
+                ) {
+                  this.boardInputs[row_index + (x - 3)][
+                    col_index
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + (x - 2)][
+                    col_index
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + (x - 1)][
+                    col_index
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + x][col_index].classList.add(
+                    "winSquare"
+                  );
+                  this.winner = true;
+                }
+              } catch (e) {
+                // Ignore TypeError: Board border
+              }
+            }
+            break;
+
+          default:
+            break;
+        }
+  }
+
+  // If winCondtion == 5
+  winCondition_5(condition, row_index, col_index, playerFigure){
+    switch (condition) {
+          case 1: // Diagonal \
+            for (let x = 0; x <= this.winCondition; x++) {
+              try {
+                if (
+                  this.boardInputs[row_index + (x - 4)][col_index + (x - 4)]
+                    .value == playerFigure &&
+                  this.boardInputs[row_index + (x - 3)][col_index + (x - 3)]
+                    .value == playerFigure &&
+                  this.boardInputs[row_index + (x - 2)][col_index + (x - 2)]
+                    .value == playerFigure &&
+                  this.boardInputs[row_index + (x - 1)][col_index + (x - 1)]
+                    .value == playerFigure &&
+                  this.boardInputs[row_index + x][col_index + x].value ==
+                  playerFigure
+                ) {
+                  this.boardInputs[row_index + (x - 4)][
+                    col_index + (x - 4)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + (x - 3)][
+                    col_index + (x - 3)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + (x - 2)][
+                    col_index + (x - 2)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + (x - 1)][
+                    col_index + (x - 1)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + x][col_index + x].classList.add(
+                    "winSquare"
+                  );
+                  this.winner = true;
+                  // No se cierra con break para evaluar si el jugador gano por más de un lado
+                }
+              } catch (e) {
+                // Ignore TypeError: Board border
+              }
+            }
+            break;
+
+          case 2: // Diagonal /
+            for (let x = 0; x <= this.winCondition; x++) {
+              try {
+                if (
+                  this.boardInputs[row_index + (x - 4)][col_index + (4 - x)]
+                    .value == playerFigure &&
+                  this.boardInputs[row_index + (x - 3)][col_index + (3 - x)]
+                    .value == playerFigure &&
+                  this.boardInputs[row_index + (x - 2)][col_index + (2 - x)]
+                    .value == playerFigure &&
+                  this.boardInputs[row_index + (x - 1)][col_index + (1 - x)]
+                    .value == playerFigure &&
+                  this.boardInputs[row_index + x][col_index - x].value ==
+                  playerFigure
+                ) {
+                  this.boardInputs[row_index + (x - 4)][
+                    col_index + (4 - x)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + (x - 3)][
+                    col_index + (3 - x)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + (x - 2)][
+                    col_index + (2 - x)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + (x - 1)][
+                    col_index + (1 - x)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + x][col_index - x].classList.add(
+                    "winSquare"
+                  );
+                  this.winner = true;
+                  // No se cierra con break para evaluar si el jugador gano por más de un lado
+                }
+              } catch (e) {
+                // Ignore TypeError: Board border
+              }
+            }
+            break;
+
+          case 3: // Horizontal
+            for (let x = 0; x <= this.winCondition; x++) {
+              try {
+                if (
+                  this.boardInputs[row_index][col_index + (x - 4)].value ==
+                  playerFigure &&
+                  this.boardInputs[row_index][col_index + (x - 3)].value ==
+                  playerFigure &&
+                  this.boardInputs[row_index][col_index + (x - 2)].value ==
+                  playerFigure &&
+                  this.boardInputs[row_index][col_index + (x - 1)].value ==
+                  playerFigure &&
+                  this.boardInputs[row_index][col_index + x].value ==
+                  playerFigure
+                ) {
+                  this.boardInputs[row_index][
+                    col_index + (x - 4)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index][
+                    col_index + (x - 3)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index][
+                    col_index + (x - 2)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index][
+                    col_index + (x - 1)
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index][col_index + x].classList.add(
+                    "winSquare"
+                  );
+                  this.winner = true;
+                  // No se cierra con break para evaluar si el jugador gano por más de un lado
+                }
+              } catch (e) {
+                // Ignore TypeError: Board border
+              }
+            }
+            break;
+
+          case 4: // Vertical
+            for (let x = 0; x <= this.winCondition; x++) {
+              try {
+                if (
+                  this.boardInputs[row_index + (x - 4)][col_index].value ==
+                  playerFigure &&
+                  this.boardInputs[row_index + (x - 3)][col_index].value ==
+                  playerFigure &&
+                  this.boardInputs[row_index + (x - 2)][col_index].value ==
+                  playerFigure &&
+                  this.boardInputs[row_index + (x - 1)][col_index].value ==
+                  playerFigure &&
+                  this.boardInputs[row_index + x][col_index].value ==
+                  playerFigure
+                ) {
+                  this.boardInputs[row_index + (x - 4)][
+                    col_index
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + (x - 3)][
+                    col_index
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + (x - 2)][
+                    col_index
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + (x - 1)][
+                    col_index
+                  ].classList.add("winSquare");
+                  this.boardInputs[row_index + x][col_index].classList.add(
+                    "winSquare"
+                  );
+                  this.winner = true;
+                }
+              } catch (e) {
+                // Ignore TypeError: Board border
+              }
+            }
+            break;
+
+          default:
+            break;
+        }
+  }
+
+
 }

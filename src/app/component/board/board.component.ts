@@ -21,7 +21,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
   // Win Condition
   winConditionArrow: number;
-  winner = false;
 
   // Board
   boardIndexSquares: Array<Square>;
@@ -97,191 +96,18 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
   // Evalua el tablero y realiza los cambios CSS en caso de que haya un ganador
   evaluateBoard(row_index, col_index, playerFigure) {
-    // Evaluar condiciones
-    // cond = 4 => vertical, horizontal, diagonal 1 y diagonal 2
-    for (let condition = 1; condition <= 4; condition++) {
-      try {
-        this.evaluateWinCondition(condition, row_index, col_index, playerFigure);
-      } catch (e) {
-        // Ignore TypeError: Board border
-      }
-    }
+    
+    this._gameService.evaluateWinCondition(row_index, col_index, playerFigure);
 
     // Si hay ganador
-    if (this.winner) {
+    if (this._gameService.winner) {
       console.log("Ha ganado el jugador: " + playerFigure);
       let playerWinner;
-
       if (playerFigure == this.player_1.figure) {
         this._gameService.gameOver(this.player_1);
       } else if (playerFigure == this.player_2.figure) {
         this._gameService.gameOver(this.player_2);
       }
-
-      this.winner = false;
-    }
-  }
-
-  // Evalua que se cumplan las condiciones de victoia
-  evaluateWinCondition(condition, row_index, col_index, playerFigure) {
-    switch (condition) {
-      case 1: // Diagonal \
-        for (let x = 0; x <= this.winConditionArrow; x++) {
-          try {
-            if (
-              this._gameService.boardInputs[row_index + (x - 4)][col_index + (x - 4)]
-                .value == playerFigure &&
-              this._gameService.boardInputs[row_index + (x - 3)][col_index + (x - 3)]
-                .value == playerFigure &&
-              this._gameService.boardInputs[row_index + (x - 2)][col_index + (x - 2)]
-                .value == playerFigure &&
-              this._gameService.boardInputs[row_index + (x - 1)][col_index + (x - 1)]
-                .value == playerFigure &&
-              this._gameService.boardInputs[row_index + x][col_index + x].value ==
-              playerFigure
-            ) {
-              this._gameService.boardInputs[row_index + (x - 4)][
-                col_index + (x - 4)
-              ].classList.add("winSquare");
-              this._gameService.boardInputs[row_index + (x - 3)][
-                col_index + (x - 3)
-              ].classList.add("winSquare");
-              this._gameService.boardInputs[row_index + (x - 2)][
-                col_index + (x - 2)
-              ].classList.add("winSquare");
-              this._gameService.boardInputs[row_index + (x - 1)][
-                col_index + (x - 1)
-              ].classList.add("winSquare");
-              this._gameService.boardInputs[row_index + x][col_index + x].classList.add(
-                "winSquare"
-              );
-              this.winner = true;
-              // No se cierra con break para evaluar si el jugador gano por más de un lado
-            }
-          } catch (e) {
-            // Ignore TypeError: Board border
-          }
-        }
-        break;
-
-      case 2: // Diagonal /
-        for (let x = 0; x <= this.winConditionArrow; x++) {
-          try {
-            if (
-              this._gameService.boardInputs[row_index + (x - 4)][col_index + (4 - x)]
-                .value == playerFigure &&
-              this._gameService.boardInputs[row_index + (x - 3)][col_index + (3 - x)]
-                .value == playerFigure &&
-              this._gameService.boardInputs[row_index + (x - 2)][col_index + (2 - x)]
-                .value == playerFigure &&
-              this._gameService.boardInputs[row_index + (x - 1)][col_index + (1 - x)]
-                .value == playerFigure &&
-              this._gameService.boardInputs[row_index + x][col_index - x].value ==
-              playerFigure
-            ) {
-              this._gameService.boardInputs[row_index + (x - 4)][
-                col_index + (4 - x)
-              ].classList.add("winSquare");
-              this._gameService.boardInputs[row_index + (x - 3)][
-                col_index + (3 - x)
-              ].classList.add("winSquare");
-              this._gameService.boardInputs[row_index + (x - 2)][
-                col_index + (2 - x)
-              ].classList.add("winSquare");
-              this._gameService.boardInputs[row_index + (x - 1)][
-                col_index + (1 - x)
-              ].classList.add("winSquare");
-              this._gameService.boardInputs[row_index + x][col_index - x].classList.add(
-                "winSquare"
-              );
-              this.winner = true;
-              // No se cierra con break para evaluar si el jugador gano por más de un lado
-            }
-          } catch (e) {
-            // Ignore TypeError: Board border
-          }
-        }
-        break;
-
-      case 3: // Horizontal
-        for (let x = 0; x <= this.winConditionArrow; x++) {
-          try {
-            if (
-              this._gameService.boardInputs[row_index][col_index + (x - 4)].value ==
-              playerFigure &&
-              this._gameService.boardInputs[row_index][col_index + (x - 3)].value ==
-              playerFigure &&
-              this._gameService.boardInputs[row_index][col_index + (x - 2)].value ==
-              playerFigure &&
-              this._gameService.boardInputs[row_index][col_index + (x - 1)].value ==
-              playerFigure &&
-              this._gameService.boardInputs[row_index][col_index + x].value ==
-              playerFigure
-            ) {
-              this._gameService.boardInputs[row_index][
-                col_index + (x - 4)
-              ].classList.add("winSquare");
-              this._gameService.boardInputs[row_index][
-                col_index + (x - 3)
-              ].classList.add("winSquare");
-              this._gameService.boardInputs[row_index][
-                col_index + (x - 2)
-              ].classList.add("winSquare");
-              this._gameService.boardInputs[row_index][
-                col_index + (x - 1)
-              ].classList.add("winSquare");
-              this._gameService.boardInputs[row_index][col_index + x].classList.add(
-                "winSquare"
-              );
-              this.winner = true;
-              // No se cierra con break para evaluar si el jugador gano por más de un lado
-            }
-          } catch (e) {
-            // Ignore TypeError: Board border
-          }
-        }
-        break;
-
-      case 4: // Vertical
-        for (let x = 0; x <= this.winConditionArrow; x++) {
-          try {
-            if (
-              this._gameService.boardInputs[row_index + (x - 4)][col_index].value ==
-              playerFigure &&
-              this._gameService.boardInputs[row_index + (x - 3)][col_index].value ==
-              playerFigure &&
-              this._gameService.boardInputs[row_index + (x - 2)][col_index].value ==
-              playerFigure &&
-              this._gameService.boardInputs[row_index + (x - 1)][col_index].value ==
-              playerFigure &&
-              this._gameService.boardInputs[row_index + x][col_index].value ==
-              playerFigure
-            ) {
-              this._gameService.boardInputs[row_index + (x - 4)][
-                col_index
-              ].classList.add("winSquare");
-              this._gameService.boardInputs[row_index + (x - 3)][
-                col_index
-              ].classList.add("winSquare");
-              this._gameService.boardInputs[row_index + (x - 2)][
-                col_index
-              ].classList.add("winSquare");
-              this._gameService.boardInputs[row_index + (x - 1)][
-                col_index
-              ].classList.add("winSquare");
-              this._gameService.boardInputs[row_index + x][col_index].classList.add(
-                "winSquare"
-              );
-              this.winner = true;
-            }
-          } catch (e) {
-            // Ignore TypeError: Board border
-          }
-        }
-        break;
-
-      default:
-        break;
     }
   }
 

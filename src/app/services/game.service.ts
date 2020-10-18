@@ -16,7 +16,6 @@ export class GameService {
   cont = 0;
 
   // Winner
-  winCondition: number;
   winnerPlayer: Player;
   showModal: boolean;
   winner = false;
@@ -33,7 +32,6 @@ export class GameService {
     }
 
     // Winner
-    this.winCondition = _gameConfigService.getWinCondition();
     this.setWinnerPlayer(null);
     this.setModal(false)
   }
@@ -133,7 +131,7 @@ export class GameService {
     // cond = 4 => vertical, horizontal, diagonal 1 y diagonal 2
     for (let condition = 1; condition <= 4; condition++) {
       try {
-        switch(this.winCondition){
+        switch(this._gameConfigService.getWinCondition()){
           case 3:
             this.winCondition_3(condition, row_index, col_index, playerFigure);
             break;
@@ -158,7 +156,7 @@ export class GameService {
   winCondition_3(condition, row_index, col_index, playerFigure){
     switch (condition) {
           case 1: // Diagonal \
-            for (let x = 0; x <= this.winCondition; x++) {
+            for (let x = 0; x <= 3; x++) {
               try {
                 if (
                   this.boardInputs[row_index + (x - 2)][col_index + (x - 2)]
@@ -187,7 +185,7 @@ export class GameService {
             break;
 
           case 2: // Diagonal /
-            for (let x = 0; x <= this.winCondition; x++) {
+            for (let x = 0; x <= 3; x++) {
               try {
                 if (
                   this.boardInputs[row_index + (x - 2)][col_index + (2 - x)]
@@ -216,7 +214,7 @@ export class GameService {
             break;
 
           case 3: // Horizontal
-            for (let x = 0; x <= this.winCondition; x++) {
+            for (let x = 0; x <= 3; x++) {
               try {
                 if (
                   this.boardInputs[row_index][col_index + (x - 2)].value ==
@@ -245,7 +243,7 @@ export class GameService {
             break;
 
           case 4: // Vertical
-            for (let x = 0; x <= this.winCondition; x++) {
+            for (let x = 0; x <= 3; x++) {
               try {
                 if (
                   this.boardInputs[row_index + (x - 2)][col_index].value ==
@@ -281,7 +279,7 @@ export class GameService {
   winCondition_4(condition, row_index, col_index, playerFigure){
     switch (condition) {
           case 1: // Diagonal \
-            for (let x = 0; x <= this.winCondition; x++) {
+            for (let x = 0; x <= 4; x++) {
               try {
                 if (
                   this.boardInputs[row_index + (x - 3)][col_index + (x - 3)]
@@ -315,7 +313,7 @@ export class GameService {
             break;
 
           case 2: // Diagonal /
-            for (let x = 0; x <= this.winCondition; x++) {
+            for (let x = 0; x <= 4; x++) {
               try {
                 if (
                   this.boardInputs[row_index + (x - 3)][col_index + (3 - x)]
@@ -349,7 +347,7 @@ export class GameService {
             break;
 
           case 3: // Horizontal
-            for (let x = 0; x <= this.winCondition; x++) {
+            for (let x = 0; x <= 4; x++) {
               try {
                 if (
                   this.boardInputs[row_index][col_index + (x - 3)].value ==
@@ -383,7 +381,7 @@ export class GameService {
             break;
 
           case 4: // Vertical
-            for (let x = 0; x <= this.winCondition; x++) {
+            for (let x = 0; x <= 4; x++) {
               try {
                 if (
                   this.boardInputs[row_index + (x - 3)][col_index].value ==
@@ -424,7 +422,7 @@ export class GameService {
   winCondition_5(condition, row_index, col_index, playerFigure){
     switch (condition) {
           case 1: // Diagonal \
-            for (let x = 0; x <= this.winCondition; x++) {
+            for (let x = 0; x <= 5; x++) {
               try {
                 if (
                   this.boardInputs[row_index + (x - 4)][col_index + (x - 4)]
@@ -463,7 +461,7 @@ export class GameService {
             break;
 
           case 2: // Diagonal /
-            for (let x = 0; x <= this.winCondition; x++) {
+            for (let x = 0; x <= 5; x++) {
               try {
                 if (
                   this.boardInputs[row_index + (x - 4)][col_index + (4 - x)]
@@ -502,7 +500,7 @@ export class GameService {
             break;
 
           case 3: // Horizontal
-            for (let x = 0; x <= this.winCondition; x++) {
+            for (let x = 0; x <= 5; x++) {
               try {
                 if (
                   this.boardInputs[row_index][col_index + (x - 4)].value ==
@@ -541,7 +539,7 @@ export class GameService {
             break;
 
           case 4: // Vertical
-            for (let x = 0; x <= this.winCondition; x++) {
+            for (let x = 0; x <= 5; x++) {
               try {
                 if (
                   this.boardInputs[row_index + (x - 4)][col_index].value ==

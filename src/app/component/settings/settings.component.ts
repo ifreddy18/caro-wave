@@ -12,6 +12,7 @@ import { GameService } from '../../services/game.service';
 export class SettingsComponent implements OnInit, OnChanges {
 
   winCondition: number;
+  validSettings: boolean;
 
   constructor(
     private _location: Location,
@@ -19,6 +20,7 @@ export class SettingsComponent implements OnInit, OnChanges {
     public _gameService: GameService
   ) {
     this.winCondition = _gameConfigService.getWinCondition();
+    this.validSettings = true;
   }
 
   ngOnInit(): void {
@@ -26,6 +28,7 @@ export class SettingsComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     this.winCondition = this._gameConfigService.getWinCondition();
+    this.winConditionValidation();
   }
 
   previousPage(){
@@ -41,6 +44,26 @@ export class SettingsComponent implements OnInit, OnChanges {
   saveAndStart(){
     this._gameConfigService.setWinCondition(this.winCondition);
     this._gameService.newGame();
+  }
+
+  // Validation
+  winConditionValidation(): void {
+    if (this.winCondition < 3 || this.winCondition >5){
+      this.validSettings = false;
+    } else {
+      this.validSettings = true;
+    }
+  }
+
+  // Arrow
+  winConditionIncrement(): void {
+    this.winCondition++;
+    this.winConditionValidation();
+  }
+
+  winConditionDecrement(): void {
+    this.winCondition--;
+    this.winConditionValidation();
   }
 
 }

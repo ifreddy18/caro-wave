@@ -1,1 +1,26 @@
-<p>settings works!</p>
+<div id="host">
+    <h1>Settings</h1>
+    <div id="options">
+        <label for="">
+            <span>Win condition:</span>
+            <input type="button" 
+                (click)="winConditionDecrement()" 
+                [disabled]="winCondition <= 3"
+                class="arrow"
+                value="◀"> 
+            
+            <input type="text" [(ngModel)]="winCondition" disabled>
+            <input type="button"
+                (click)="winConditionIncrement()"
+                [disabled]="winCondition >= 5" 
+                class="arrow"
+                value="▶">
+        </label>
+    </div>
+
+    <div id="buttons">
+        <button (click)="previousPage()" [disabled]="!validSettings">Back</button>
+        <button (click)="resetSettings()">Reset Settings</button>
+        <button (click)="saveAndStart()" [disabled]="!validSettings" routerLink="/game">Save and Start</button>
+    </div>
+</div>

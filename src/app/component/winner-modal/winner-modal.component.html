@@ -2,7 +2,7 @@
     <div id="content-modal">
         <span id="exit-modal" (click)="closeModal()">&times;</span>
         <div class="clearfix"></div>
-        <h3>{{_gameService.winner.name}} ({{_gameService.winner.figure}}) won!!!</h3>
+        <h3>{{_gameService.winnerPlayer.name}} ({{_gameService.winnerPlayer.figure}}) won!!!</h3>
         <input type="button" value="New game" (click)="newGame()">
     </div>
 </div>

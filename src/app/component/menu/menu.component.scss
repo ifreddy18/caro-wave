@@ -18,7 +18,7 @@ $button-heigth: 40px;
 }
 
 #logo h1 {
-    @extend %logo-text;
+    @include logoText($custom-cian);
     line-height: 70px;
     font-size: 40px;
 }

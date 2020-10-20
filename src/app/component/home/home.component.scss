@@ -1,15 +1,7 @@
 @import '../../../styles.scss';
 
-#host{
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    background: $custom-dark-bg;
-    text-align: center;
-}
-
 h1{
-    @extend %logo-text;
+    @include logoText($custom-cian);
     font-size: 70px;
     margin-top: 70px;
     padding-bottom: 20px;

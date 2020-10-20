@@ -86,7 +86,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     this.customSquare(inputSquare, playerFigure);
-    this.nextTurn();
+    this._gameService.nextTurn();
     inputSquare.disabled = "disabled";
 
     // Win Condition
@@ -120,18 +120,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // Set turn (boolean) to players
-  nextTurn() {
-    if (this.player_1.turn) {
-      this.player_1.turn = false;
-      this.player_2.turn = true;
-    } else if (this.player_2.turn) {
-      this.player_1.turn = true;
-      this.player_2.turn = false;
-    } else {
-      console.log("Error: No player selected");
-    }
-  }
+  
 
 
 }

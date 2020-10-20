@@ -9,8 +9,8 @@ import { GameConfig } from './game-config';
 export class GameConfigService {
 
   // Players
-  private player_1: Player;
-  private player_2: Player;
+  public player_1: Player;
+  public player_2: Player;
   // Board
   private boardRows: number;
   private boardCols: number;

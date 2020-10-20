@@ -90,6 +90,7 @@ export class GameService {
     this.setWinnerPlayer(null);
     this.winner = false
     this.cleanBoard();
+    this.nextTurn();
   }
 
   // 
@@ -115,6 +116,19 @@ export class GameService {
   setModal(showModal: boolean): void{
     this.showModal = showModal;
   } 
+
+  // Set turn (boolean) to players
+  nextTurn() {
+    if (this._gameConfigService.player_1.turn) {
+      this._gameConfigService.player_1.turn = false;
+      this._gameConfigService.player_2.turn = true;
+    } else if (this._gameConfigService.player_2.turn) {
+      this._gameConfigService.player_1.turn = true;
+      this._gameConfigService.player_2.turn = false;
+    } else {
+      console.log("Error: No player selected");
+    }
+  }
 
 
   // Evaluate Win Condition methods
